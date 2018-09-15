@@ -9,8 +9,8 @@ PARAMETERS DESCRIPTION:
 [smtp server]:        Host of the smtp server.
 [smtp port: 465|587]: To specify port under service is listening (465/587 ports only).
 [Keywords List]:      Text file fill with words separated by commas.
-[Password length]:    Length of the resulted word in the combination process. if "1" is used, the word list is used as a simple dictionary  
-                      but if the number is equal or greater than "2", the words contained in the text file will be used to build 
-                      combinations growing until you reach the length specified.
+[Password length]:    Length of the resulted word in the combination process. if "1" is used, the words list is used as a simple 
+                      dictionary but if the number is equal or greater than "2", the words contained in the text file will be used to 
+                      build combinations growing until the length specified is reached.
 [Number of procs]:    Amount of concurrent processes needed.
 [Delay(ms)]:          Waiting between concurrent processes for the execution.
