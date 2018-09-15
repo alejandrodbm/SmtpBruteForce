@@ -311,7 +311,7 @@ func perm(maxPwdLen int, wordList []string) []string {
 	return pwdSlice
 }
 
-// The permutation magic happens here...
+// The word combination magic happens here...
 func nextPwd(combNumber int, wordList []string) func() string {
 	y, x := make([]string, combNumber), make([]int, combNumber)
 	return func() string {
