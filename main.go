@@ -65,7 +65,9 @@ func (s *sharedVars) AccessOKPrint() string {
 	return s.accessOK
 }
 
-// SMTP AUTH LOGIN FUNCTION
+// SMTP AUTH LOGIN FUNCTION MADE & SHARED UNDER MIT license (c) BY andelf 2013 [https://gist.github.com/andelf/5118732]
+// AND ADAPTED FOR THIS PROJECT...
+// - - -
 type lauth struct {
 	username, password string
 }
@@ -87,6 +89,13 @@ func (a *lauth) Next(fromServer []byte, more bool) ([]byte, error) {
 	}
 	return nil, nil
 }
+
+// Some smtp server doesn't support the smtp.PlainAuth() method then
+// we need to make our own auth method to fix this issue.
+func smtpAuth(username, password string) smtp.Auth {
+	return &lauth{username, password}
+}
+// - - -
 
 // MAIN FUNCTION
 func main() {
@@ -122,12 +131,6 @@ func main() {
 	if data.accessOK != "" {
 		fmt.Println(data.AccessOKPrint())
 	}
-}
-
-// Some smtp server doesn't support the smtp.PlainAuth() method then
-// we need to make our own auth method to fix this issue.
-func smtpAuth(username, password string) smtp.Auth {
-	return &lauth{username, password}
 }
 
 // SUBMAIN FUNCTIONS
