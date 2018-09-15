@@ -125,7 +125,7 @@ func main() {
 }
 
 // Some smtp server doesn't support the smtp.PlainAuth() method then
-// we need to make our own LoginAuth method to fix this issue.
+// we need to make our own auth method to fix this issue.
 func smtpAuth(username, password string) smtp.Auth {
 	return &lauth{username, password}
 }
