@@ -90,8 +90,6 @@ func (a *lauth) Next(fromServer []byte, more bool) ([]byte, error) {
 	return nil, nil
 }
 
-// Some smtp server doesn't support the smtp.PlainAuth() method then
-// we need to make our own auth method to fix this issue.
 func smtpAuth(username, password string) smtp.Auth {
 	return &lauth{username, password}
 }
