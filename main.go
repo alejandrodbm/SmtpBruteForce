@@ -66,15 +66,15 @@ func (s *sharedVars) AccessOKPrint() string {
 }
 
 // SMTP AUTH LOGIN FUNCTION
-type lAuth struct {
+type lauth struct {
 	username, password string
 }
 
-func (a *lAuth) Start(server *smtp.ServerInfo) (string, []byte, error) {
+func (a *lauth) Start(server *smtp.ServerInfo) (string, []byte, error) {
 	return "LOGIN", []byte{}, nil
 }
 
-func (a *lAuth) Next(fromServer []byte, more bool) ([]byte, error) {
+func (a *lauth) Next(fromServer []byte, more bool) ([]byte, error) {
 	if more {
 		switch string(fromServer) {
 		case "Username:":
@@ -127,7 +127,7 @@ func main() {
 // LoginAuth ... Outlook smtp server doesn't support the smtp.PlainAuth() method then
 // we need to make our own LoginAuth method to fix this issue.
 func smtpAuth(username, password string) smtp.Auth {
-	return &lAuth{username, password}
+	return &lauth{username, password}
 }
 
 // SUBMAIN FUNCTIONS
