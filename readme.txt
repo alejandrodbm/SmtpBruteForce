@@ -13,4 +13,4 @@ PARAMETERS DESCRIPTION:
                       dictionary but if the number is equal or greater than "2", the words contained in the text file will be used to 
                       build combinations growing until the length specified is reached.
 [Number of procs]:    Amount of concurrent processes needed.
-[Delay(ms)]:          Waiting between concurrent processes for the execution.
+[Delay(ms)]:          Wait between concurrent processes before resuming re-execution.
