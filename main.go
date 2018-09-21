@@ -128,6 +128,7 @@ func main() {
 	wg.Wait()
 	if data.accessOK != "" {
 		fmt.Println(data.AccessOKPrint())
+		fmt.Println("WARNING!!! -> Smtp Servers actually can be using evasive systems and false positive could be thrown...")
 	}
 }
 
