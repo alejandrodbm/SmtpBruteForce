@@ -16,4 +16,4 @@ PARAMETERS DESCRIPTION:
 [Delay(ms)]:          Wait between concurrent processes before resuming re-execution.
 [Round Robin(secs)]:  To specify between the battery of attacks and the waits expressed in seconds.
                       * When this is enabled concurrency and delay is automatically disabled.
-                      * If "0" is set the round robin is disabled.
+                      * Set "0" to disable the round robin.
