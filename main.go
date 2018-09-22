@@ -103,7 +103,6 @@ func smtpAuth(username, password string) smtp.Auth {
 func main() {
 	if len(os.Args[1:]) < 8 {
 		fmt.Printf("Error: missing argument...\n")
-		// fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
 		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]\n", os.Args[0])
 		return
 	}
@@ -121,12 +120,10 @@ func main() {
 	}
 	if maxProcs <= 0 {
 		fmt.Printf("Error: procs must be \"1\" at least...\n")
-		// fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
 		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]\n", os.Args[0])
 		return
 	} else if delay < 0 {
 		fmt.Printf("Error: delay must be \"0\" at least...\n")
-		// fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
 		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]\n", os.Args[0])
 		return
 	}
@@ -135,7 +132,6 @@ func main() {
 		bruteForce(wordsReader(wordDict), maxPwdLen, maxProcs)
 	default:
 		fmt.Printf("Error: wrong port -> %s\n", mailServer.port)
-		// fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
 		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]\n", os.Args[0])
 		return
 	}
