@@ -14,6 +14,6 @@ PARAMETERS DESCRIPTION:
                       build combinations growing until the length specified is reached.
 [Number of procs]:    Amount of concurrent processes needed.
 [Delay(ms)]:          Wait between concurrent processes before resuming re-execution.
-[Round Robin(secs)]:  To specify between the battery of attacks and the waits expressed in seconds.
-                      * When this is enabled concurrency and delay is automatically disabled.
+[Round Robin(secs)]:  To specify a global wait between attacks executions (value in seconds).
+                      * Enabling this... concurrency and delay is automatically disabled.
                       * Set "0" to disable the round robin.
