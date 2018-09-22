@@ -1,5 +1,5 @@
 USAGE:
-go run main.go [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)]
+go run main.go [target email] [smtp server] [smtp port: 465|587] [Keywords List] [Password length] [Number of procs] [Delay(ms)] [Round Robin(secs)]
 
 EXAMPLE OF USE:
 go run main.go email@gmail.com smtp.gmail.com 465 words.txt 1 1 500
@@ -14,3 +14,4 @@ PARAMETERS DESCRIPTION:
                       build combinations growing until the length specified is reached.
 [Number of procs]:    Amount of concurrent processes needed.
 [Delay(ms)]:          Wait between concurrent processes before resuming re-execution.
+[Round Robin(secs)]:  To specify between the battery of attacks and the waits expressed in seconds.
