@@ -15,5 +15,5 @@ PARAMETERS DESCRIPTION:
 [Number of procs]:    Amount of concurrent processes needed.
 [Delay(ms)]:          Wait between concurrent processes before resuming re-execution.
 [Round Robin(secs)]:  To specify a global wait between attacks executions (value must be in seconds).
-                      * Enabling this... concurrency and delay is automatically disabled.
+                      * If enabled the concurrency and delay is automatically disabled.
                       * Set "0" to disable the round robin.
